@@ -11,24 +11,24 @@ using namespace std;
 
 class getInteger {
 public:
-	getInteger() 
-	{
-		srand((int)(time(NULL)));
-	}
+    getInteger() 
+    {
+        srand((int)(time(NULL)));
+    }
 
-	int operator()(int domain)
-	{
-		return rand() % domain;
-	}
+    int operator()(int domain)
+    {
+        return rand() % domain;
+    }
 };
 
 int main(int argc, char const *argv[])
 {
-	getInteger randomNumber;
+    getInteger randomNumber;
 
-	for(int i = 0; i < 10; ++i) {
-		cout << randomNumber(100) << endl;
-	}
+    for(int i = 0; i < 10; ++i) {
+        cout << randomNumber(100) << endl;
+    }
 
-	return 0;
+    return 0;
 }
