@@ -46,6 +46,11 @@ class DerivedCover : public Base1, public Base2
     {
         std::cout << "in DerivedCover::f()\n";
     }
+
+    virtual void g_new()
+    {
+        std::cout << "in DerivedCover::g_new()\n";
+    }
 };
 
 typedef void (*VFunc)();
@@ -96,7 +101,7 @@ void callVirtualFuncCover()
     std::cout << "First Virtual Function Addr: " << virtualFuncPtr << "\n";
     std::cout << "First Virtual Function Addr: " << firstVirtualFunc << "\n";
 
-    for (int i = 0; i < 2; ++i)
+    for (int i = 0; i < 3; ++i)
     {
         VFunc func = (VFunc) * (firstVirtualFunc + i);
         func();
