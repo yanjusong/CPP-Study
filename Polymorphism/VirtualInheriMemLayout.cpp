@@ -30,7 +30,7 @@ class Parent
     PtrType iCommon;
 };
 
-class Child : public Parent
+class Child : virtual public Parent
 {
   public:
     Child() : Parent(), iChild(100), cChild('B'), iCommon(1000)
@@ -54,15 +54,17 @@ class Child : public Parent
 
 // Child 内存布局
 // [0] vptr
-//      Parent::parent_f()
 //      Child::f()
 //      Child::child_f()
 // [1] Parent::iParent
 // [2] Parent::cParent
-// [3] Parent::iCommond
-// [4] Child::iChild
-// [5] Child::cChild
-// [6] Child::iCommond
+// [3] Parent::iCommon
+// [4] vptr
+//      Child::f()
+//      Parent::parent_f()
+// [5] Child::iChild
+// [6] Child::cChild
+// [7] Child::iCommon
 
 int main()
 {
@@ -73,7 +75,7 @@ int main()
     std::cout << "Virtual Function Addr: " << virtualFuncPtr << "\n";
     std::cout << "First Virtual Function Addr: " << firstVirtualFunc << "\n";
 
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < 2; ++i)
     {
         VFunc func = (VFunc) * (firstVirtualFunc + i);
         func();
@@ -90,13 +92,26 @@ int main()
     memberPtr = virtualFuncPtr + 3;
     std::cout << "\tParent::iCommon-> " << *memberPtr << "\n";
 
-    memberPtr = virtualFuncPtr + 4;
+    // ---------------------------------------------------------------------------------- //
+    virtualFuncPtr = virtualFuncPtr + 4;
+    PtrType *secondVirtualFunc = (PtrType *)*virtualFuncPtr;
+
+    std::cout << "Virtual Function Addr: " << virtualFuncPtr << "\n";
+    std::cout << "First Virtual Function Addr: " << secondVirtualFunc << "\n";
+
+    for (int i = 0; i < 2; ++i)
+    {
+        VFunc func = (VFunc) * (secondVirtualFunc + i);
+        func();
+    }
+
+    memberPtr = virtualFuncPtr + 1;
     std::cout << "\tChild::iChild-> " << *memberPtr << "\n";
 
-    memberPtr = virtualFuncPtr + 5;
+    memberPtr = virtualFuncPtr + 2;
     std::cout << "\tChild::cChild-> " << *((char *)memberPtr) << "\n";
 
-    memberPtr = virtualFuncPtr + 6;
+    memberPtr = virtualFuncPtr + 3;
     std::cout << "\tChild::iCommon-> " << *memberPtr << "\n";
 
     // 以下没有二意性
