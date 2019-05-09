@@ -1,3 +1,6 @@
 *.exe
 *.out
+*.a
+*/a
+*/a.out
 .vscode/*
